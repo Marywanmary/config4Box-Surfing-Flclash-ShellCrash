@@ -68,14 +68,46 @@
 ---
 
 ## 🚀 深度优化：AI 智能解锁专区 
-*(底层拨号测速降级方案)*
 
-以下为配置文件中 AI 节点的优化配置示例。通过限定订阅源，可避免劣质 CF 等干扰节点混入浪费探测时间，默认仅使用高质量的主力机场。
+> [!NOTE]
+> **核心作用**：AIGC (ChatGPT / Claude / Gemini) 专属防封锁通道。通过底层直连订阅池与低频真实探测，彻底摆脱“脏 IP”引发的断网问题。
+
+以下为 AI 节点的相关配置代码。**默认启用“方案 A（智能解锁）”**；如果您是 Box/Surfing 用户且对 AI 使用频率低，可按照注释说明切换至“方案 B（手动选区）”。
 
 ```yaml
+# ------------------------------------------------------
+# 🚀 深度优化：AI 智能解锁专区 (底层拨号测速降级方案)
+# ------------------------------------------------------
 - name: Ai
   type: url-test
   # ⚠️ 限定订阅源：避免劣质 CF 等干扰节点混入浪费探测时间，默认仅使用高质量的主力机场。
   use:
     - Sub01
     # - Sub02  # 💡 如果你有其他稳定解锁 AI 的机场源，删除行首的 # 号即可添加
+    # - Sub03
+  
+  # 双重保险匹配规则：优先筛选含原生/解锁/GPT等关键词的节点；若无，则圈定美/日/台/新等优质大区作为候选池。
+  filter: '(?i)(?:原生|解锁|专线|GPT|Chat|NF)|(?i)(?:美|日|台|新|US|JP|TW|SG)'
+  
+  url: "https://gemini.google.com"
+  interval: 14400 # 测试频率降至 4小时 (14400秒)，极大降低被 AI 网站标记为异常高频流量的风险
+  tolerance: 100  # 容忍度 100ms，避免不必要的网络微抖动导致节点乱切
+  icon: "https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/ChatGPT.png"
+  
+  health-check:
+    enable: true
+    url: "https://gemini.google.com"
+    interval: 14400
+    expected-status: 200/307/302 # 若探测遭遇 403 封锁或 429 频控，立刻踢出候选池
+  
+  # [作用]：AIGC(ChatGPT/Claude/Gemini) 专属防封锁通道。通过底层直连订阅池与低频真实探测，彻底摆脱“脏IP”引发的断网问题。
+
+# ------------------------------------------------------
+# 🚀 AI 手动选区方案
+# 对国际AI使用频率低的 Box / Surfing 用户可以注释或者删除掉上方【深度优化：AI 智能解锁专区】手动启用本段代码，实现Lightgbm模型智能优化。
+# Flclash 用户在没有更新 Smart内核前不用考虑，直接默认。
+# ------------------------------------------------------
+# - name: Ai
+#   <<: *Groupp
+#   icon: "https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/ChatGPT.png"
+#   # [作用]：AIGC(ChatGPT/Claude/Gemini)。建议选"美国/台湾/日本"。⚠️ 必须避开香港，否则封号或报错 Access Denied。
