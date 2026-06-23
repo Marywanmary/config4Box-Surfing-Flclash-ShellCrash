@@ -243,7 +243,7 @@ proxy-groups:
 # 🔞 边缘大流量/视频业务：强制走白嫖 CF 大流量池，跑满带宽
 - name: Porn
   type: select
-  use: [SubCF01, SubCF02]
+  proxies: [CF-香港, CF-台湾, CF-狮城, CF-日本, CF-美国, CF-其它国家]
   icon: "https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Pornhub_1.png"
 
 # 🎬 修复：改为自动测速池，避免单一节点卡顿导致视频缓冲
