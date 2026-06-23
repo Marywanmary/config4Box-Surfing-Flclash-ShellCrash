@@ -575,9 +575,9 @@ rules:
 - RULE-SET,github,Github
 - RULE-SET,ai-chat-!cn,Ai
 - RULE-SET,reddit,Reddit
-- RULE-SET,porn-hub,🔞 Porn
-- RULE-SET,mindgeek-porn,🔞 Porn
-- RULE-SET,category-porn,🔞 Porn
+- RULE-SET,porn-hub,Porn
+- RULE-SET,mindgeek-porn,Porn
+- RULE-SET,category-porn,Porn
 - RULE-SET,apple,Apple
 - RULE-SET,microsoft,Microsoft
 
